@@ -35,6 +35,9 @@ while True:
     confidences = []
     class_ids = []
 
+#sta parte toma la salida cruda de la red YOLO y la transforma 
+# en cajas delimitadorascon sus etiquetas y niveles de confianza
+# plica NMS Non-Maximum Suppression para eliminar las detecciones duplicadas o muy parecidas
     for output in layer_outputs:
         for detection in output:
             scores = detection[5:]
@@ -56,7 +59,9 @@ while True:
 
     # Eliminar cajas superpuestas
     indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
-
+#Revisa si hay objetos detectados.
+#si  hay, dibuja un recuadro verde alrededor de cada uno en la imagen
+#Tambie muestra el nombre del objeto
     if len(indexes) > 0:
         for i in indexes.flatten():
             x, y, w, h = boxes[i]
